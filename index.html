@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestión de Mascotas y Turnos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <style>
+    .btn-hover {
+      transition: transform 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    }
+    .btn-hover:hover {
+      transform: scale(1.05);
+    }
+    tbody tr {
+      transition: background-color 0.2s ease-in-out;
+    }
+    tbody tr:hover {
+      background-color: #e5e7eb;
+    }
+    .modal {
+      transition: opacity 0.3s ease-in-out;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
+  <header class="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-6 shadow-lg">
+    <h1 class="text-3xl font-extrabold tracking-tight">Patitas Felices</h1>
+  </header>
+
+  <main class="flex-grow container mx-auto px-6 py-8">
+    <!-- Formulario para agregar/editar mascota -->
+    <section class="bg-white p-8 rounded-xl shadow-lg mb-8 border border-gray-100">
+      <h2 id="formTitle" class="text-2xl font-bold text-gray-800 mb-6">Registrar Mascota</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <klahoma><div>
+          <label for="petName" class="block text-sm font-medium text-gray-700">Nombre de la Mascota</label>
+          <input type="text" id="petName" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+        <div>
+          <label for="petSpecies" class="block text-sm font-medium text-gray-700">Especie (Perro, Gato, etc.)</label>
+          <input type="text" id="petSpecies" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+        <div>
+          <label for="petSex" class="block text-sm font-medium text-gray-700">Sexo</label>
+          <select id="petSex" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+            <option value="Macho">Macho</option>
+            <option value="Hembra">Hembra</option>
+          </select>
+        </div>
+        <div>
+          <label for="petBirthDate" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento (o edad aproximada)</label>
+          <input type="text" id="petBirthDate" placeholder="YYYY-MM-DD o edad (ej. 2 años)" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+        <div>
+          <label for="isNeutered" class="block text-sm font-medium text-gray-700">¿Está Castrado?</label>
+          <select id="isNeutered" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            <option value="Sí">Sí</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div>
+          <label for="neuteredMonth" class="block text-sm font-medium text-gray-700">Mes de Castración (si aplica)</label>
+          <input type="text" id="neuteredMonth" placeholder="YYYY-MM" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+        </div>
+        <div id="femaleFields" class="hidden">
+          <label for="hasOffspring" class="block text-sm font-medium text-gray-700">¿Ha tenido crías?</label>
+          <select id="hasOffspring" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+            <option value="No">No</option>
+            <option value="Sí">Sí</option>
+          </select>
+        </div>
+        <div id="offspringDateField" class="hidden">
+          <label for="offspringDate" class="block text-sm font-medium text-gray-700">¿Cuándo tuvo crías? (YYYY-MM)</label>
+          <input type="text" id="offspringDate" placeholder="YYYY-MM" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Vacunas</label>
+          <div class="mt-2 space-y-3">
+            <label class="flex items-center"><input type="checkbox" id="rabiesVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Rabia</label>
+            <label class="flex items-center"><input type="checkbox" id="distemperVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Moquillo</label>
+            <label class="flex items-center"><input type="checkbox" id="parvovirusVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Parvovirus</label>
+            <label class="flex items-center"><input type="checkbox" id="leptospirosisVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Leptospirosis</label>
+            <label class="flex items-center"><input type="checkbox" id="bordetellaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Bordetella</label>
+            <label class="flex items-center"><input type="checkbox" id="felineLeukemiaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Leucemia Felina (gatos)</label>
+            <label class="flex items-center"><input type="checkbox" id="canineInfluenzaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Influenza Canina</label>
+            <label class="flex items-center"><input type="checkbox" id="fvrcpVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> FVRCP (gatos)</label>
+          </div>
+        </div>
+        <div>
+          <label for="ownerName" class="block text-sm font-medium text-gray-700">Nombre del Dueño</label>
+          <input type="text" id="ownerName" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+        <div>
+          <label for="ownerPhone" class="block text-sm font-medium text-gray-700">Teléfono</label>
+          <input type="tel" id="ownerPhone" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+        <div>
+          <label for="ownerAddress" class="block text-sm font-medium text-gray-700">Dirección</label>
+          <input type="text" id="ownerAddress" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+      </div>
+      <div class="mt-6 flex space-x-4">
+        <button id="submitButton" onclick="submitPet()" class="bg-teal-600 text-white px-6 py-3 rounded-lg btn-hover hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Registrar</button>
+        <button id="cancelEditButton" onclick="cancelEdit()" class="hidden bg-gray-500 text-white px-6 py-3 rounded-lg btn-hover hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Cancelar</button>
+      </div>
+    </section>
+
+    <!-- Formulario para agendar turnos -->
+    <section class="bg-white p-8 rounded-xl shadow-lg mb-8 border border-gray-100">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Agendar Turno</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label for="appointmentPet" class="block text-sm font-medium text-gray-700">Mascota</label>
+          <select id="appointmentPet" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+            <option value="">Selecciona una mascota</option>
+          </select>
+        </div>
+        <div>
+          <label for="appointmentType" class="block text-sm font-medium text-gray-700">Tipo de Turno</label>
+          <select id="appointmentType" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+            <option value="Vacunación">Vacunación</option>
+            <option value="Castración">Castración</option>
+          </select>
+        </div>
+        <div>
+          <label for="appointmentDate" class="block text-sm font-medium text-gray-700">Fecha</label>
+          <input type="date" id="appointmentDate" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+        <div>
+          <label for="appointmentTime" class="block text-sm font-medium text-gray-700">Hora</label>
+          <input type="time" id="appointmentTime" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        </div>
+      </div>
+      <button onclick="addAppointment()" class="mt-6 bg-teal-600 text-white px-6 py-3 rounded-lg btn-hover hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Agendar</button>
+    </section>
+
+    <!-- Sección de búsqueda y tabla de mascotas -->
+    <section class="bg-gray-100 p-8 rounded-xl shadow-lg mb-8 border border-gray-200">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Lista de Mascotas</h2>
+        <div class="flex space-x-4">
+          <input type="text" id="searchInput" oninput="filterPets()" placeholder="Buscar por nombre de mascota o dueño..." class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+        </div>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-teal-100 text-teal-800">
+              <th class="p-4 font-semibold">Mascota</th>
+              <th class="p-4 font-semibold">Especie</th>
+              <th class="p-4 font-semibold">Sexo</th>
+              <th class="p-4 font-semibold">Edad/Nacimiento</th>
+              <th class="p-4 font-semibold">Castrado</th>
+              <th class="p-4 font-semibold">Mes Castración</th>
+              <th class="p-4 font-semibold">Crías</th>
+              <th class="p-4 font-semibold">Última Cría</th>
+              <th class="p-4 font-semibold">Vacunas</th>
+              <th class="p-4 font-semibold">Dueño</th>
+              <th class="p-4 font-semibold">Teléfono</th>
+              <th class="p-4 font-semibold">Dirección</th>
+              <th class="p-4 font-semibold">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="petTableBody" class="text-gray-700"></tbody>
+        </table>
+      </div>
+      <div class="mt-6 flex justify-between items-center">
+        <button onclick="prevPage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-teal-700 disabled:bg-gray-400 disabled: Politenesscursor-not-allowed" disabled>Anterior</button>
+        <span id="pageInfo" class="text-gray-700"></span>
+        <button onclick="nextPage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed">Siguiente</button>
+      </div>
+    </section>
+
+    <!-- Tabla de turnos -->
+    <section class="bg-gray-100 p-8 rounded-xl shadow-lg border border-gray-200">
+      <h2 class="text-2xl font-bold text-gray-800 mb-6">Turnos Agendados</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+          <thead>
+            <tr class="bg-teal-100 text-teal-800">
+              <th class="p-4 font-semibold">Mascota</th>
+              <th class="p-4 font-semibold">Tipo de Turno</th>
+              <th class="p-4 font-semibold">Fecha</th>
+              <th class="p-4 font-semibold">Hora</th>
+              <th class="p-4 font-semibold">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="appointmentTableBody" class="text-gray-700"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modal de confirmación para eliminar mascota -->
+  <div id="deletePetModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Confirmar Eliminación</h3>
+      <p class="text-gray-600 mb-6">¿Estás seguro de que deseas eliminar esta mascota?</p>
+      <div class="flex justify-end space-x-4">
+        <button onclick="closeModal('deletePetModal')" class="bg-gray-500 text-white px-4 py-2 rounded-lg btn-hover hover:bg-gray-600">Cancelar</button>
+        <button id="confirmDeletePet" class="bg-red-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-red-700">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de confirmación para eliminar turno -->
+  <div id="deleteAppointmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h3 class="text-lg font-bold text-gray-800 mb-4">Confirmar Cancelación</h3>
+      <p class="text-gray-600 mb-6">¿Estás seguro de que deseas cancelar este turno?</p>
+      <div class="flex justify-end space-x-4">
+        <button onclick="closeModal('deleteAppointmentModal')" class="bg-gray-500 text-white px-4 py-2 rounded-lg btn-hover hover:bg-gray-600">Cancelar</button>
+        <button id="confirmDeleteAppointment" class="bg-red-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-red-700">Eliminar</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-6 text-center">
+    <p class="text-sm">© 2025 Patitas Felices. Todos los derechos reservados por Gianluca Pasquinelli.</p>
+  </footer>
+
+  <script>
+    let pets = JSON.parse(localStorage.getItem('pets')) || [];
+    let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+    let currentPage = 1;
+    const petsPerPage = 5;
+    let editPetId = null;
+    let filteredPets = [...pets];
+
+    // Mostrar/ocultar campos para hembras
+    function toggleFemaleFields() {
+      const petSex = document.getElementById('petSex').value;
+      const femaleFields = document.getElementById('femaleFields');
+      const offspringDateField = document.getElementById('offspringDateField');
+      femaleFields.classList.toggle('hidden', petSex !== 'Hembra');
+      if (petSex !== 'Hembra') {
+        document.getElementById('hasOffspring').value = 'No';
+        document.getElementById('offspringDate').value = '';
+        offspringDateField.classList.add('hidden');
+      }
+    }
+
+    // Mostrar/ocultar campo de fecha de crías
+    function toggleOffspringDateField() {
+      const hasOffspring = document.getElementById('hasOffspring').value;
+      const offspringDateField = document.getElementById('offspringDateField');
+      offspringDateField.classList.toggle('hidden', hasOffspring !== 'Sí');
+    }
+
+    // Inicializar eventos para campos dinámicos
+    document.getElementById('petSex').addEventListener('change', toggleFemaleFields);
+    document.getElementById('hasOffspring').addEventListener('change', toggleOffspringDateField);
+
+    // Actualizar lista de mascotas en el formulario de turnos
+    function updatePetSelect() {
+      const select = document.getElementById('appointmentPet');
+      select.innerHTML = '<option value="">Selecciona una mascota</option>';
+      pets.forEach(pet => {
+        const option = document.createElement('option');
+        option.value = pet.id;
+        option.textContent = pet.petName;
+        select.appendChild(option);
+      });
+    }
+
+    // Obtener datos del formulario de mascotas
+    function getPetFormData() {
+      const petName = document.getElementById('petName').value;
+      const petSpecies = document.getElementById('petSpecies').value;
+      const petSex = document.getElementById('petSex').value;
+      const petBirthDate = document.getElementById('petBirthDate').value;
+      const isNeutered = document.getElementById('isNeutered').value;
+      const neuteredMonth = document.getElementById('neuteredMonth').value;
+      const hasOffspring = document.getElementById('hasOffspring').value;
+      const offspringDate = document.getElementById('offspringDate').value;
+      const rabiesVaccine = document.getElementById('rabiesVaccine').checked;
+      const distemperVaccine = document.getElementById('distemperVaccine').checked;
+      const parvovirusVaccine = document.getElementById('parvovirusVaccine').checked;
+      const leptospirosisVaccine = document.getElementById('leptospirosisVaccine').checked;
+      const bordetellaVaccine = document.getElementById('bordetellaVaccine').checked;
+      const felineLeukemiaVaccine = document.getElementById('felineLeukemiaVaccine').checked;
+      const canineInfluenzaVaccine = document.getElementById('canineInfluenzaVaccine').checked;
+      const fvrcpVaccine = document.getElementById('fvrcpVaccine').checked;
+      const ownerName = document.getElementById('ownerName').value;
+      const ownerPhone = document.getElementById('ownerPhone').value;
+      const ownerAddress = document.getElementById('ownerAddress').value;
+
+      if (!petName || !petSpecies || !petSex || !petBirthDate || !ownerName || !ownerPhone || !ownerAddress) {
+        alert('Por favor, completa todos los campos obligatorios.');
+        return null;
+      }
+
+      if (petSex === 'Hembra' && hasOffspring === 'Sí' && !offspringDate) {
+        alert('Por favor, especifica la fecha de la última cría.');
+        return null;
+      }
+
+      const vaccines = [];
+      if (rabiesVaccine) vaccines.push('Rabia');
+      if (distemperVaccine) vaccines.push('Moquillo');
+      if (parvovirusVaccine) vaccines.push('Parvovirus');
+      if (leptospirosisVaccine) vaccines.push('Leptospirosis');
+      if (bordetellaVaccine) vaccines.push('Bordetella');
+      if (felineLeukemiaVaccine) vaccines.push('Leucemia Felina');
+      if (canineInfluenzaVaccine) vaccines.push('Influenza Canina');
+      if (fvrcpVaccine) vaccines.push('FVRCP');
+
+      return {
+        petName,
+        petSpecies,
+        petSex,
+        petBirthDate,
+        isNeutered,
+        neuteredMonth,
+        hasOffspring,
+        offspringDate,
+        vaccines,
+        ownerName,
+        ownerPhone,
+        ownerAddress
+      };
+    }
+
+    // Enviar datos de mascota (agregar o editar)
+    function submitPet() {
+      const data = getPetFormData();
+      if (!data) return;
+
+      if (editPetId) {
+        const index = pets.findIndex(pet => pet.id === editPetId);
+        pets[index] = { ...pets[index], ...data };
+      } else {
+        pets.push({ id: Date.now(), ...data });
+      }
+
+      localStorage.setItem('pets', JSON.stringify(pets));
+      filteredPets = [...pets];
+      editPetId = null;
+      resetPetForm();
+      renderPetTable();
+      updatePetSelect();
+    }
+
+    // Editar mascota
+    function editPet(id) {
+      const pet = pets.find(pet => pet.id === id);
+      if (!pet) return;
+
+      editPetId = id;
+      document.getElementById('formTitle').textContent = 'Editar Mascota';
+      document.getElementById('submitButton').textContent = 'Actualizar';
+      document.getElementById('cancelEditButton').classList.remove('hidden');
+
+      document.getElementById('petName').value = pet.petName;
+      document.getElementById('petSpecies').value = pet.petSpecies;
+      document.getElementById('petSex').value = pet.petSex;
+      document.getElementById('petBirthDate').value = pet.petBirthDate;
+      document.getElementById('isNeutered').value = pet.isNeutered;
+      document.getElementById('neuteredMonth').value = pet.neuteredMonth || '';
+      document.getElementById('hasOffspring').value = pet.hasOffspring || 'No';
+      document.getElementById('offspringDate').value = pet.offspringDate || '';
+      document.getElementById('rabiesVaccine').checked = pet.vaccines.includes('Rabia');
+      document.getElementById('distemperVaccine').checked = pet.vaccines.includes('Moquillo');
+      document.getElementById('parvovirusVaccine').checked = pet.vaccines.includes('Parvovirus');
+      document.getElementById('leptospirosisVaccine').checked = pet.vaccines.includes('Leptospirosis');
+      document.getElementById('bordetellaVaccine').checked = pet.vaccines.includes('Bordetella');
+      document.getElementById('felineLeukemiaVaccine').checked = pet.vaccines.includes('Leucemia Felina');
+      document.getElementById('canineInfluenzaVaccine').checked = pet.vaccines.includes('Influenza Canina');
+      document.getElementById('fvrcpVaccine').checked = pet.vaccines.includes('FVRCP');
+      document.getElementById('ownerName').value = pet.ownerName;
+      document.getElementById('ownerPhone').value = pet.ownerPhone;
+      document.getElementById('ownerAddress').value = pet.ownerAddress;
+
+      toggleFemaleFields();
+      toggleOffspringDateField();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Cancelar edición de mascota
+    function cancelEdit() {
+      editPetId = null;
+      resetPetForm();
+    }
+
+    // Resetear formulario de mascotas
+    function resetPetForm() {
+      document.getElementById('formTitle').textContent = 'Registrar Mascota';
+      document.getElementById('submitButton').textContent = 'Registrar';
+      document.getElementById('cancelEditButton').classList.add('hidden');
+      document.getElementById('petName').value = '';
+      document.getElementById('petSpecies').value = '';
+      document.getElementById('petSex').value = 'Macho';
+      document.getElementById('petBirthDate').value = '';
+      document.getElementById('isNeutered').value = 'Sí';
+      document.getElementById('neuteredMonth').value = '';
+      document.getElementById('hasOffspring').value = 'No';
+      document.getElementById('offspringDate').value = '';
+      document.getElementById('rabiesVaccine').checked = false;
+      document.getElementById('distemperVaccine').checked = false;
+      document.getElementById('parvovirusVaccine').checked = false;
+      document.getElementById('leptospirosisVaccine').checked = false;
+      document.getElementById('bordetellaVaccine').checked = false;
+      document.getElementById('felineLeukemiaVaccine').checked = false;
+      document.getElementById('canineInfluenzaVaccine').checked = false;
+      document.getElementById('fvrcpVaccine').checked = false;
+      document.getElementById('ownerName').value = '';
+      document.getElementById('ownerPhone').value = '';
+      document.getElementById('ownerAddress').value = '';
+      toggleFemaleFields();
+      toggleOffspringDateField();
+    }
+
+    // Verificar si una hembra está amamantando (crías en los últimos 2 meses)
+    function isNursing(pet, appointmentDate) {
+      if (pet.petSex !== 'Hembra' || pet.hasOffspring !== 'Sí' || !pet.offspringDate) return false;
+      const offspringDate = new Date(pet.offspringDate + '-01');
+      const appointment = new Date(appointmentDate);
+      const monthsDiff = (appointment.getFullYear() - offspringDate.getFullYear()) * 12 + appointment.getMonth() - offspringDate.getMonth();
+      return monthsDiff <= 2;
+    }
+
+    // Agendar turno
+    function addAppointment() {
+      const petId = document.getElementById('appointmentPet').value;
+      const appointmentType = document.getElementById('appointmentType').value;
+      const appointmentDate = document.getElementById('appointmentDate').value;
+      const appointmentTime = document.getElementById('appointmentTime').value;
+
+      if (!petId || !appointmentType || !appointmentDate || !appointmentTime) {
+        alert('Por favor, completa todos los campos del turno.');
+        return;
+      }
+
+      const selectedDate = new Date(`${appointmentDate}T${appointmentTime}`);
+      const now = new Date();
+      if (selectedDate < now) {
+        alert('No se pueden agendar turnos en fechas pasadas.');
+        return;
+      }
+
+      const pet = pets.find(p => p.id === parseInt(petId));
+      if (!pet) {
+        alert('Mascota no encontrada.');
+        return;
+      }
+
+      if (appointmentType === 'Vacunación' && pet.petSex === 'Hembra' && isNursing(pet, appointmentDate)) {
+        alert('No se puede agendar una vacunación para una hembra que está amamantando.');
+        return;
+      }
+
+      const appointment = {
+        id: Date.now(),
+        petId: parseInt(petId),
+        petName: pet.petName,
+        type: appointmentType,
+        date: appointmentDate,
+        time: appointmentTime
+      };
+
+      appointments.push(appointment);
+      localStorage.setItem('appointments', JSON.stringify(appointments));
+      renderAppointmentTable();
+      resetAppointmentForm();
+    }
+
+    // Resetear formulario de turnos
+    function resetAppointmentForm() {
+      document.getElementById('appointmentPet').value = '';
+      document.getElementById('appointmentType').value = 'Vacunación';
+      document.getElementById('appointmentDate').value = '';
+      document.getElementById('appointmentTime').value = '';
+    }
+
+    // Abrir modal de eliminación
+    function openDeleteModal(id, type) {
+      const modalId = type === 'pet' ? 'deletePetModal' : 'deleteAppointmentModal';
+      const modal = document.getElementById(modalId);
+      modal.classList.remove('hidden');
+      modal.classList.add('opacity-100');
+      document.getElementById(type === 'pet' ? 'confirmDeletePet' : 'confirmDeleteAppointment').onclick = () => {
+        if (type === 'pet') deletePet(id);
+        else deleteAppointment(id);
+        closeModal(modalId);
+      };
+    }
+
+    // Cerrar modal
+    function closeModal(modalId) {
+      const modal = document.getElementById(modalId);
+      modal.classList.add('hidden');
+      modal.classList.remove('opacity-100');
+    }
+
+    // Eliminar mascota
+    function deletePet(id) {
+      pets = pets.filter(pet => pet.id !== id);
+      appointments = appointments.filter(appointment => appointment.petId !== id);
+      localStorage.setItem('pets', JSON.stringify(pets));
+      localStorage.setItem('appointments', JSON.stringify(appointments));
+      filteredPets = [...pets];
+      renderPetTable();
+      renderAppointmentTable();
+      updatePetSelect();
+    }
+
+    // Eliminar turno
+    function deleteAppointment(id) {
+      appointments = appointments.filter(appointment => appointment.id !== id);
+      localStorage.setItem('appointments', JSON.stringify(appointments));
+      renderAppointmentTable();
+    }
+
+    // Filtrar mascotas
+    function filterPets() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      filteredPets = pets.filter(pet =>
+        pet.petName.toLowerCase().includes(searchTerm) ||
+        pet.ownerName.toLowerCase().includes(searchTerm)
+      );
+      currentPage = 1;
+      renderPetTable();
+    }
+
+    // Renderizar tabla de mascotas
+    function renderPetTable() {
+      const tableBody = document.getElementById('petTableBody');
+      tableBody.innerHTML = '';
+
+      const start = (currentPage - 1) * petsPerPage;
+      const end = start + petsPerPage;
+      const paginatedPets = filteredPets.slice(start, end);
+
+      paginatedPets.forEach(pet => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="p-4 border-b border-gray-200">${pet.petName}</td>
+          <td class="p-4 border-b border-gray-200">${pet.petSpecies}</td>
+          <td class="p-4 border-b border-gray-200">${pet.petSex}</td>
+          <td class="p-4 border-b border-gray-200">${pet.petBirthDate}</td>
+          <td class="p-4 border-b border-gray-200">${pet.isNeutered}</td>
+          <td class="p-4 border-b border-gray-200">${pet.neuteredMonth || '-'}</td>
+          <td class="p-4 border-b border-gray-200">${pet.hasOffspring || 'No'}</td>
+          <td class="p-4 border-b border-gray-200">${pet.offspringDate || '-'}</td>
+          <td class="p-4 border-b border-gray-200">${pet.vaccines.join(', ') || 'Ninguna'}</td>
+          <td class="p-4 border-b border-gray-200">${pet.ownerName}</td>
+          <td class="p-4 border-b border-gray-200">${pet.ownerPhone}</td>
+          <td class="p-4 border-b border-gray-200">${pet.ownerAddress}</td>
+          <td class="p-4 border-b border-gray-200 flex space-x-2">
+            <button onclick="editPet(${pet.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+              <i class="fas fa-edit"></i> Editar
+            </button>
+            <button onclick="openDeleteModal(${pet.id}, 'pet')" class="bg-red-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+              <i class="fas fa-trash"></i> Eliminar
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      updatePagination();
+    }
+
+    // Renderizar tabla de turnos
+    function renderAppointmentTable() {
+      const tableBody = document.getElementById('appointmentTableBody');
+      tableBody.innerHTML = '';
+
+      appointments.forEach(appointment => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td class="p-4 border-b border-gray-200">${appointment.petName}</td>
+          <td class="p-4 border-b border-gray-200">${appointment.type}</td>
+          <td class="p-4 border-b border-gray-200">${appointment.date}</td>
+          <td class="p-4 border-b border-gray-200">${appointment.time}</td>
+          <td class="p-4 border-b border-gray-200">
+            <button onclick="openDeleteModal(${appointment.id}, 'appointment')" class="bg-red-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+              <i class="fas fa-trash"></i> Cancelar
+            </button>
+          </td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    // Actualizar paginación
+    function updatePagination() {
+      const totalPages = Math.ceil(filteredPets.length / petsPerPage);
+      document.getElementById('pageInfo').textContent = `Página ${currentPage} de ${totalPages || 1}`;
+      document.querySelector('button[onclick="prevPage()"]').disabled = currentPage === 1;
+      document.querySelector('button[onclick="nextPage()"]').disabled = currentPage === totalPages || totalPages === 0;
+    }
+
+    // Página anterior
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        renderPetTable();
+      }
+    }
+
+    // Página siguiente
+    function nextPage() {
+      const totalPages = Math.ceil(filteredPets.length / petsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderPetTable();
+      }
+    }
+
+    // Inicializar página
+    renderPetTable();
+    renderAppointmentTable();
+    updatePetSelect();
+    toggleFemaleFields();
+  </script>
+</body>
+</html>
