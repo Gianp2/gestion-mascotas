@@ -19,135 +19,141 @@
     tbody tr:hover {
       background-color: #e5e7eb;
     }
+    .dark tbody tr:hover {
+      background-color: #4b5563;
+    }
     .modal {
       transition: opacity 0.3s ease-in-out;
     }
   </style>
 </head>
-<body class="bg-gray-50 min-h-screen flex flex-col font-sans">
-  <header class="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-6 shadow-lg">
-    <h1 class="text-3xl font-extrabold tracking-tight">Patitas Felices</h1>
+<body class="bg-gray-50 min-h-screen flex flex-col font-sans transition-colors duration-300" id="body">
+  <header class="bg-gradient-to-r from-teal-500 to-blue-600 text-white p-6 shadow-lg flex justify-between items-center">
+    <h1 class="text-3xl font-extrabold tracking-tight">Patotita Felices</h1>
+    <button id="themeToggle" class="text-white p-2 rounded-full btn-hover focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-teal-600">
+      <i id="themeIcon" class="fas fa-moon"></i>
+    </button>
   </header>
 
   <main class="flex-grow container mx-auto px-6 py-8">
     <!-- Formulario para agregar/editar mascota -->
-    <section class="bg-white p-8 rounded-xl shadow-lg mb-8 border border-gray-100">
-      <h2 id="formTitle" class="text-2xl font-bold text-gray-800 mb-6">Registrar Mascota</h2>
+    <section class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg mb-8 border border-gray-100 dark:border-gray-700">
+      <h2 id="formTitle" class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Registrar Mascota</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <klahoma><div>
-          <label for="petName" class="block text-sm font-medium text-gray-700">Nombre de la Mascota</label>
-          <input type="text" id="petName" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+        <div>
+          <label for="petName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre de la Mascota</label>
+          <input type="text" id="petName" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
         <div>
-          <label for="petSpecies" class="block text-sm font-medium text-gray-700">Especie (Perro, Gato, etc.)</label>
-          <input type="text" id="petSpecies" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="petSpecies" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Especie (Perro, Gato, etc.)</label>
+          <input type="text" id="petSpecies" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
         <div>
-          <label for="petSex" class="block text-sm font-medium text-gray-700">Sexo</label>
-          <select id="petSex" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="petSex" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Sexo</label>
+          <select id="petSex" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
             <option value="Macho">Macho</option>
             <option value="Hembra">Hembra</option>
           </select>
         </div>
         <div>
-          <label for="petBirthDate" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento (o edad aproximada)</label>
-          <input type="text" id="petBirthDate" placeholder="YYYY-MM-DD o edad (ej. 2 años)" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="petBirthDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha de Nacimiento (o edad aproximada)</label>
+          <input type="text" id="petBirthDate" placeholder="YYYY-MM-DD o edad (ej. 2 años)" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
         <div>
-          <label for="isNeutered" class="block text-sm font-medium text-gray-700">¿Está Castrado?</label>
-          <select id="isNeutered" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+          <label for="isNeutered" class="block text-sm font-medium text-gray-700 dark:text-gray-300">¿Está Castrado?</label>
+          <select id="isNeutered" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100">
             <option value="Sí">Sí</option>
             <option value="No">No</option>
           </select>
         </div>
         <div>
-          <label for="neuteredMonth" class="block text-sm font-medium text-gray-700">Mes de Castración (si aplica)</label>
-          <input type="text" id="neuteredMonth" placeholder="YYYY-MM" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+          <label for="neuteredMonth" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Mes de Castración (si aplica)</label>
+          <input type="text" id="neuteredMonth" placeholder="YYYY-MM" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100">
         </div>
         <div id="femaleFields" class="hidden">
-          <label for="hasOffspring" class="block text-sm font-medium text-gray-700">¿Ha tenido crías?</label>
-          <select id="hasOffspring" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+          <label for="hasOffspring" class="block text-sm font-medium text-gray-700 dark:text-gray-300">¿Ha tenido crías?</label>
+          <select id="hasOffspring" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100">
             <option value="No">No</option>
             <option value="Sí">Sí</option>
           </select>
         </div>
         <div id="offspringDateField" class="hidden">
-          <label for="offspringDate" class="block text-sm font-medium text-gray-700">¿Cuándo tuvo crías? (YYYY-MM)</label>
-          <input type="text" id="offspringDate" placeholder="YYYY-MM" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+          <label for="offspringDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">¿Cuándo tuvo crías? (YYYY-MM)</label>
+          <input type="text" id="offspringDate" placeholder="YYYY-MM" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700">Vacunas</label>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Vacunas</label>
           <div class="mt-2 space-y-3">
-            <label class="flex items-center"><input type="checkbox" id="rabiesVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Rabia</label>
-            <label class="flex items-center"><input type="checkbox" id="distemperVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Moquillo</label>
-            <label class="flex items-center"><input type="checkbox" id="parvovirusVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Parvovirus</label>
-            <label class="flex items-center"><input type="checkbox" id="leptospirosisVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Leptospirosis</label>
-            <label class="flex items-center"><input type="checkbox" id="bordetellaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Bordetella</label>
-            <label class="flex items-center"><input type="checkbox" id="felineLeukemiaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Leucemia Felina (gatos)</label>
-            <label class="flex items-center"><input type="checkbox" id="canineInfluenzaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> Influenza Canina</label>
-            <label class="flex items-center"><input type="checkbox" id="fvrcpVaccine" class="h-4 w-4 text-teal-600 border-gray-300 rounded focus:ring-teal-500"> FVRCP (gatos)</label>
+            <label class="flex items-center"><input type="checkbox" id="rabiesVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Rabia</span></label>
+            <label class="flex items-center"><input type="checkbox" id="distemperVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Moquillo</span></label>
+            <label class="flex items-center"><input type="checkbox" id="parvovirusVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Parvovirus</span></label>
+            <label class="flex items-center"><input type="checkbox" id="leptospirosisVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Leptospirosis</span></label>
+            <label class="flex items-center"><input type="checkbox" id="bordetellaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Bordetella</span></label>
+            <label class="flex items-center"><input type="checkbox" id="felineLeukemiaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Leucemia Felina (gatos)</span></label>
+            <label class="flex items-center"><input type="checkbox" id="canineInfluenzaVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">Influenza Canina</span></label>
+            <label class="flex items-center"><input type="checkbox" id="fvrcpVaccine" class="h-4 w-4 text-teal-600 border-gray-300 dark:border-gray-600 rounded focus:ring-teal-500"> <span class="ml-2 text-gray-700 dark:text-gray-300">FVRCP (gatos)</span></label>
           </div>
         </div>
         <div>
-          <label for="ownerName" class="block text-sm font-medium text-gray-700">Nombre del Dueño</label>
-          <input type="text" id="ownerName" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="ownerName" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre del Dueño</label>
+          <input type="text" id="ownerName" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
         <div>
-          <label for="ownerPhone" class="block text-sm font-medium text-gray-700">Teléfono</label>
-          <input type="tel" id="ownerPhone" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="ownerPhone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Teléfono</label>
+          <input type="tel" id="ownerPhone" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
         <div>
-          <label for="ownerAddress" class="block text-sm font-medium text-gray-700">Dirección</label>
-          <input type="text" id="ownerAddress" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="ownerAddress" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Dirección</label>
+          <input type="text" id="ownerAddress" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
       </div>
       <div class="mt-6 flex space-x-4">
-        <button id="submitButton" onclick="submitPet()" class="bg-teal-600 text-white px-6 py-3 rounded-lg btn-hover hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Registrar</button>
-        <button id="cancelEditButton" onclick="cancelEdit()" class="hidden bg-gray-500 text-white px-6 py-3 rounded-lg btn-hover hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Cancelar</button>
+        <button id="submitButton" onclick="submitPet()" class="bg-teal-600 text-white px-6 py-3 rounded-lg btn-hover hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">Registrar</button>
+        <button id="cancelEditButton" onclick="cancelEdit()" class="hidden bg-gray-500 text-white px-6 py-3 rounded-lg btn-hover hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">Cancelar</button>
       </div>
     </section>
 
     <!-- Formulario para agendar turnos -->
-    <section class="bg-white p-8 rounded-xl shadow-lg mb-8 border border-gray-100">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6">Agendar Turno</h2>
+    <section class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg mb-8 border border-gray-100 dark:border-gray-700">
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Agendar Turno</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label for="appointmentPet" class="block text-sm font-medium text-gray-700">Mascota</label>
-          <select id="appointmentPet" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="appointmentPet" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Mascota</label>
+          <select id="appointmentPet" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
             <option value="">Selecciona una mascota</option>
           </select>
         </div>
         <div>
-          <label for="appointmentType" class="block text-sm font-medium text-gray-700">Tipo de Turno</label>
-          <select id="appointmentType" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="appointmentType" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipo de Turno</label>
+          <select id="appointmentType" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
             <option value="Vacunación">Vacunación</option>
             <option value="Castración">Castración</option>
           </select>
         </div>
         <div>
-          <label for="appointmentDate" class="block text-sm font-medium text-gray-700">Fecha</label>
-          <input type="date" id="appointmentDate" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="appointmentDate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha</label>
+          <input type="date" id="appointmentDate" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
         <div>
-          <label for="appointmentTime" class="block text-sm font-medium text-gray-700">Hora</label>
-          <input type="time" id="appointmentTime" class="mt-1 p-3 w-full border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500" required>
+          <label for="appointmentTime" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Hora</label>
+          <input type="time" id="appointmentTime" class="mt-1 p-3 w-full border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100" required>
         </div>
       </div>
-      <button onclick="addAppointment()" class="mt-6 bg-teal-600 text-white px-6 py-3 rounded-lg btn-hover hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2">Agendar</button>
+      <button onclick="addAppointment()" class="mt-6 bg-teal-600 text-white px-6 py-3 rounded-lg btn-hover hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">Agendar</button>
     </section>
 
     <!-- Sección de búsqueda y tabla de mascotas -->
-    <section class="bg-gray-100 p-8 rounded-xl shadow-lg mb-8 border border-gray-200">
+    <section class="bg-gray-100 dark:bg-gray-900 p-8 rounded-xl shadow-lg mb-8 border border-gray-200 dark:border-gray-700">
       <div class="flex justify-between items-center mb-6">
-        <h2 class="text-2xl font-bold text-gray-800">Lista de Mascotas</h2>
+        <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100">Lista de Mascotas</h2>
         <div class="flex space-x-4">
-          <input type="text" id="searchInput" oninput="filterPets()" placeholder="Buscar por nombre de mascota o dueño..." class="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500">
+          <input type="text" id="searchInput" oninput="filterPets()" placeholder="Buscar por nombre de mascota o dueño..." class="p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-teal-500 dark:bg-gray-700 dark:text-gray-100">
         </div>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-teal-100 text-teal-800">
+            <tr class="bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200">
               <th class="p-4 font-semibold">Mascota</th>
               <th class="p-4 font-semibold">Especie</th>
               <th class="p-4 font-semibold">Sexo</th>
@@ -163,23 +169,23 @@
               <th class="p-4 font-semibold">Acciones</th>
             </tr>
           </thead>
-          <tbody id="petTableBody" class="text-gray-700"></tbody>
+          <tbody id="petTableBody" class="text-gray-700 dark:text-gray-300"></tbody>
         </table>
       </div>
       <div class="mt-6 flex justify-between items-center">
-        <button onclick="prevPage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-teal-700 disabled:bg-gray-400 disabled: Politenesscursor-not-allowed" disabled>Anterior</button>
-        <span id="pageInfo" class="text-gray-700"></span>
-        <button onclick="nextPage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed">Siguiente</button>
+        <button onclick="prevPage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed dark:disabled:bg-gray-600" disabled>Anterior</button>
+        <span id="pageInfo" class="text-gray-700 dark:text-gray-300"></span>
+        <button onclick="nextPage()" class="bg-teal-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-teal-700 disabled:bg-gray-400 disabled:cursor-not-allowed dark:disabled:bg-gray-600">Siguiente</button>
       </div>
     </section>
 
     <!-- Tabla de turnos -->
-    <section class="bg-gray-100 p-8 rounded-xl shadow-lg border border-gray-200">
-      <h2 class="text-2xl font-bold text-gray-800 mb-6">Turnos Agendados</h2>
+    <section class="bg-gray-100 dark:bg-gray-900 p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700">
+      <h2 class="text-2xl font-bold text-gray-800 dark:text-gray-100 mb-6">Turnos Agendados</h2>
       <div class="overflow-x-auto">
         <table class="w-full text-left border-collapse">
           <thead>
-            <tr class="bg-teal-100 text-teal-800">
+            <tr class="bg-teal-100 dark:bg-teal-900 text-teal-800 dark:text-teal-200">
               <th class="p-4 font-semibold">Mascota</th>
               <th class="p-4 font-semibold">Tipo de Turno</th>
               <th class="p-4 font-semibold">Fecha</th>
@@ -187,7 +193,7 @@
               <th class="p-4 font-semibold">Acciones</th>
             </tr>
           </thead>
-          <tbody id="appointmentTableBody" class="text-gray-700"></tbody>
+          <tbody id="appointmentTableBody" class="text-gray-700 dark:text-gray-300"></tbody>
         </table>
       </div>
     </section>
@@ -195,24 +201,24 @@
 
   <!-- Modal de confirmación para eliminar mascota -->
   <div id="deletePetModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Confirmar Eliminación</h3>
-      <p class="text-gray-600 mb-6">¿Estás seguro de que deseas eliminar esta mascota?</p>
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Confirmar Eliminación</h3>
+      <p class="text-gray-600 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar esta mascota?</p>
       <div class="flex justify-end space-x-4">
-        <button onclick="closeModal('deletePetModal')" class="bg-gray-500 text-white px-4 py-2 rounded-lg btn-hover hover:bg-gray-600">Cancelar</button>
-        <button id="confirmDeletePet" class="bg-red-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-red-700">Eliminar</button>
+        <button onclick="closeModal('deletePetModal')" class="bg-gray-500 text-white px-4 py-2 rounded-lg btn-hover hover:bg-gray-600 dark:focus:ring-offset-gray-800">Cancelar</button>
+        <button id="confirmDeletePet" class="bg-red-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-red-700 dark:focus:ring-offset-gray-800">Eliminar</button>
       </div>
     </div>
   </div>
 
   <!-- Modal de confirmación para eliminar turno -->
   <div id="deleteAppointmentModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
-      <h3 class="text-lg font-bold text-gray-800 mb-4">Confirmar Cancelación</h3>
-      <p class="text-gray-600 mb-6">¿Estás seguro de que deseas cancelar este turno?</p>
+    <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-sm w-full">
+      <h3 class="text-lg font-bold text-gray-800 dark:text-gray-100 mb-4">Confirmar Cancelación</h3>
+      <p class="text-gray-600 dark:text-gray-300 mb-6">¿Estás seguro de que deseas cancelar este turno?</p>
       <div class="flex justify-end space-x-4">
-        <button onclick="closeModal('deleteAppointmentModal')" class="bg-gray-500 text-white px-4 py-2 rounded-lg btn-hover hover:bg-gray-600">Cancelar</button>
-        <button id="confirmDeleteAppointment" class="bg-red-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-red-700">Eliminar</button>
+        <button onclick="closeModal('deleteAppointmentModal')" class="bg-gray-500 text-white px-4 py-2 rounded-lg btn-hover hover:bg-gray-600 dark:focus:ring-offset-gray-800">Cancelar</button>
+        <button id="confirmDeleteAppointment" class="bg-red-600 text-white px-4 py-2 rounded-lg btn-hover hover:bg-red-700 dark:focus:ring-offset-gray-800">Eliminar</button>
       </div>
     </div>
   </div>
@@ -228,6 +234,34 @@
     const petsPerPage = 5;
     let editPetId = null;
     let filteredPets = [...pets];
+
+    // Dark mode toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const body = document.body;
+
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        body.classList.add('dark');
+        themeIcon.classList.remove('fa-moon');
+        themeIcon.classList.add('fa-sun');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        body.classList.remove('dark');
+        themeIcon.classList.remove('fa-sun');
+        themeIcon.classList.add('fa-moon');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    setTheme(savedTheme);
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = body.classList.contains('dark') ? 'dark' : 'light';
+      setTheme(currentTheme === 'dark' ? 'light' : 'dark');
+    });
 
     // Mostrar/ocultar campos para hembras
     function toggleFemaleFields() {
@@ -536,23 +570,23 @@
       paginatedPets.forEach(pet => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td class="p-4 border-b border-gray-200">${pet.petName}</td>
-          <td class="p-4 border-b border-gray-200">${pet.petSpecies}</td>
-          <td class="p-4 border-b border-gray-200">${pet.petSex}</td>
-          <td class="p-4 border-b border-gray-200">${pet.petBirthDate}</td>
-          <td class="p-4 border-b border-gray-200">${pet.isNeutered}</td>
-          <td class="p-4 border-b border-gray-200">${pet.neuteredMonth || '-'}</td>
-          <td class="p-4 border-b border-gray-200">${pet.hasOffspring || 'No'}</td>
-          <td class="p-4 border-b border-gray-200">${pet.offspringDate || '-'}</td>
-          <td class="p-4 border-b border-gray-200">${pet.vaccines.join(', ') || 'Ninguna'}</td>
-          <td class="p-4 border-b border-gray-200">${pet.ownerName}</td>
-          <td class="p-4 border-b border-gray-200">${pet.ownerPhone}</td>
-          <td class="p-4 border-b border-gray-200">${pet.ownerAddress}</td>
-          <td class="p-4 border-b border-gray-200 flex space-x-2">
-            <button onclick="editPet(${pet.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.petName}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.petSpecies}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.petSex}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.petBirthDate}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.isNeutered}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.neuteredMonth || '-'}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.hasOffspring || 'No'}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.offspringDate || '-'}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.vaccines.join(', ') || 'Ninguna'}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.ownerName}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.ownerPhone}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${pet.ownerAddress}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700 flex space-x-2">
+            <button onclick="editPet(${pet.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
               <i class="fas fa-edit"></i> Editar
             </button>
-            <button onclick="openDeleteModal(${pet.id}, 'pet')" class="bg-red-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+            <button onclick="openDeleteModal(${pet.id}, 'pet')" class="bg-red-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
               <i class="fas fa-trash"></i> Eliminar
             </button>
           </td>
@@ -571,12 +605,12 @@
       appointments.forEach(appointment => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td class="p-4 border-b border-gray-200">${appointment.petName}</td>
-          <td class="p-4 border-b border-gray-200">${appointment.type}</td>
-          <td class="p-4 border-b border-gray-200">${appointment.date}</td>
-          <td class="p-4 border-b border-gray-200">${appointment.time}</td>
-          <td class="p-4 border-b border-gray-200">
-            <button onclick="openDeleteModal(${appointment.id}, 'appointment')" class="bg-red-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${appointment.petName}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${appointment.type}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${appointment.date}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">${appointment.time}</td>
+          <td class="p-4 border-b border-gray-200 dark:border-gray-700">
+            <button onclick="openDeleteModal(${appointment.id}, 'appointment')" class="bg-red-600 text-white px-3 py-1 rounded-lg btn-hover hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800">
               <i class="fas fa-trash"></i> Cancelar
             </button>
           </td>
